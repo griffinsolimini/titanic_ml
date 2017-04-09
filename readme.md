@@ -7,7 +7,7 @@
 </p>
 
 <p>
-    Bayesian: 0.77033
+    Bayesian: 0.73206
 </p>
 
 <p>
