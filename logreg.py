@@ -70,7 +70,7 @@ def run_experiment(eta_values):
 
     w = train(best_eta, best_T)
     
-    print 1 / (1 + np.exp(w.T * X.T))
+    print np.exp(w.T * X.T) / (1 + np.exp(w.T * X.T))
     #  print w.T * X.T
      
     #  print "best T: " + str(best_T)

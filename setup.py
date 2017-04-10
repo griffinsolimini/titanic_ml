@@ -16,18 +16,19 @@ def preprocessed_training_set():
 
     common_titles = { 'Mr', 'Mrs', 'Master', 'Miss' }
     df['Name'][df['Name'].apply(lambda x: x not in common_titles)] = "Rare"
+
+    title_map = { 'Mr':1, 'Mrs':2, 'Master':3, 'Miss':4, 'Rare':5 }
     
     # Build family size feature and make discrete
     df['FamilySize'] = df['SibSp'] + df['Parch'] + 1
     
-    df['FamilySize'].loc[df['FamilySize'] > 4] = 'large'
-    df['FamilySize'].loc[df['FamilySize'] == 1] = 'singleton'
-    df['FamilySize'].loc[(df['FamilySize'] < 5) & (df['FamilySize'] > 1)] = 'small'
+    df['FamilySize'].loc[df['FamilySize'] > 4] = 5 
+    df['FamilySize'].loc[(df['FamilySize'] < 5) & (df['FamilySize'] > 1)] = 3 
 
-    #  gender_map = { "male": 0, "female": 1 } 
-    #  port_map = { "S": 1, "C": 2, "Q": 3 }
-#  
-    #  df = df.replace({"Sex": gender_map, "Embarked": port_map })
+    gender_map = { "male": 1, "female": 2 } 
+    port_map = { "S": 1, "C": 2, "Q": 3 }
+
+    df = df.replace({"Sex": gender_map, "Embarked": port_map, "Name": title_map })
 
     return df
 
@@ -43,17 +44,18 @@ def preprocessed_test_set():
     common_titles = { 'Mr', 'Mrs', 'Master', 'Miss' }
     df['Name'][df['Name'].apply(lambda x: x not in common_titles)] = "Rare"
     
+    title_map = { 'Mr':1, 'Mrs':2, 'Master':3, 'Miss':4, 'Rare':5 }
+
     # Build family size feature and make discrete
     df['FamilySize'] = df['SibSp'] + df['Parch'] + 1
     
-    df['FamilySize'].loc[df['FamilySize'] > 4] = 'large'
-    df['FamilySize'].loc[df['FamilySize'] == 1] = 'singleton'
-    df['FamilySize'].loc[(df['FamilySize'] < 5) & (df['FamilySize'] > 1)] = 'small'
+    df['FamilySize'].loc[df['FamilySize'] > 4] = 5 
+    df['FamilySize'].loc[(df['FamilySize'] < 5) & (df['FamilySize'] > 1)] = 3 
 
-    #  gender_map = { "male": 0, "female": 1 } 
-    #  port_map = { "S": 1, "C": 2, "Q": 3 }
-#  
-    #  df = df.replace({"Sex": gender_map, "Embarked": port_map })
+    gender_map = { "male": 1, "female": 2 } 
+    port_map = { "S": 1, "C": 2, "Q": 3 }
+
+    df = df.replace({"Sex": gender_map, "Embarked": port_map, "Name": title_map })
 
     return df
 
