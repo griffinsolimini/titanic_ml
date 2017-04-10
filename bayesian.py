@@ -22,21 +22,18 @@ for row in df.iterrows():
     for column in columns:
         val = row[column]
         if column == 'Survived':
-            if val == 1:
-                survived_flag = True
-            else:
-                survived_flag = False
+            survived_flag = (row[column] == 1)
         else:
             if survived_flag:
                 if val in survived[pos].keys():
-                    survived[pos][val] += 1
+                    survived[pos][val] += 1.0
                 else:
-                    survived[pos][val] = 1
+                    survived[pos][val] = 1.0
             else:
                 if val in died[pos].keys():
-                    died[pos][val] += 1
+                    died[pos][val] += 1.0
                 else:
-                    died[pos][val] = 1
+                    died[pos][val] = 1.0
         pos += 1
 
 num_survived = 0
@@ -47,8 +44,8 @@ num_died = 0
 for key in died[0].keys():
     num_died += died[0][key]
 
-prob_survived = float(num_survived) / float(num_survived + num_died)
-prob_died = float(num_died) / float(num_survived + num_died)
+prob_survived = float(num_survived) / float(N)
+prob_died = float(num_died) / float(N)
 
 df = setup.preprocessed_test_set()
 
@@ -62,7 +59,7 @@ classifications = []
 for row in df.iterrows():
     row = row[1]
 
-    pos = -1
+    pos = 0 
     survived_flag = True
     
     prob_survived_est = prob_survived
@@ -70,14 +67,14 @@ for row in df.iterrows():
 
     for column in columns:
         val = row[column]
-        
+
         if val in survived[pos].keys():
-            prob_survived_est *= float(survived[pos][val]) / num_survived
+            prob_survived_est *= float(survived[pos][val]) / float(num_survived)
         else:
             prob_survived_est *= 0
 
         if val in died[pos].keys():
-            prob_died_est *= float(died[pos][val]) / num_died
+            prob_died_est *= float(died[pos][val]) / float(num_died)
         else:
             prob_died_est *= 0
             
