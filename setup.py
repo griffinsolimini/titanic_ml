@@ -13,7 +13,8 @@ def preprocessed_training_set():
     #df['Fare'].fillna(df['Fare'].median(), inplace=True)
     df['Fare'].fillna(8.05, inplace=True)
     df['Cabin'].fillna('U', inplace=True)
-    df['Cabin'].replace(df['Cabin'].str[0])
+   
+    df['Cabin'] = df['Cabin'].apply(lambda x: str(x)[0])
     #df['Age'].fillna('-1', inplace=True)
     df = df.fillna(0)
     
@@ -36,13 +37,13 @@ def preprocessed_training_set():
     #df['Age'].loc[(df['Age'] < 0) & ((df['Name'] == 'Miss') & (df['Parch'] > 0))] = 1
     #df['Age'].loc[(df['Age'] < 0) & ((df['Name'] == 'Master') & (df['Parch'] > 0))] = 1
     #df['Age'].loc[df['Age'] < 0] = 35
-    df['Age'].loc[df['Age'] > 64] = "1"
     df['Age'].loc[df['Age'] < 15] = "2"
+    df['Age'].loc[df['Age'] > 64] = "1"
     df['Age'].loc[(df['Age'] < 65) & (df['Age'] > 14)] = "3"
 
     gender_map = { "male": 1, "female": 2 } 
     port_map = { "S": 1, "C": 2, "Q": 3 }
-    cabin_map = {"U": 0, "A": 1, "B": 2, "C": 3, "D": 4, "E": 5, "F": 6, "G": 7}
+    cabin_map = {"U": 0, "A": 1, "B": 2, "C": 3, "D": 4, "E": 5, "F": 6, "G": 7, "T": 8}
     age_map = {"1": 1, "2": 2, "3": 3}
 
     df = df.replace({"Sex": gender_map, "Embarked": port_map, "Name": title_map, "Cabin": cabin_map, "Age": age_map })
@@ -56,7 +57,8 @@ def preprocessed_test_set():
     #df['Fare'].fillna(df['Fare'].median(), inplace=True)
     df['Fare'].fillna(8.05, inplace=True)
     df['Cabin'].fillna('U', inplace=True)
-    df['Cabin'].replace(df['Cabin'].str[0])
+
+    df['Cabin'] = df['Cabin'].apply(lambda x: str(x)[0])
     #df['Age'].fillna('-1', inplace=True)
     df = df.fillna(0)
 
@@ -79,13 +81,13 @@ def preprocessed_test_set():
     #df['Age'].loc[(df['Age'] < 0) & ((df['Name'] == 'Miss') & (df['Parch'] > 0))] = 1
     #df['Age'].loc[(df['Age'] < 0) & ((df['Name'] == 'Master') & (df['Parch'] > 0))] = 1
     #df['Age'].loc[df['Age'] < 0] = 35
-    df['Age'].loc[df['Age'] > 64] = "3"
-    df['Age'].loc[df['Age'] < 15] = "1"
-    df['Age'].loc[(df['Age'] < 65) & (df['Age'] > 14)] = "2"
+    df['Age'].loc[df['Age'] < 15] = "2"
+    df['Age'].loc[df['Age'] > 64] = "1"
+    df['Age'].loc[(df['Age'] < 65) & (df['Age'] > 14)] = "3"
     
     gender_map = { "male": 1, "female": 2 } 
     port_map = { "S": 1, "C": 2, "Q": 3 }
-    cabin_map = {"U": 0, "A": 1, "B": 2, "C": 3, "D": 4, "E": 5, "F": 6, "G": 7}
+    cabin_map = {"U": 0, "A": 1, "B": 2, "C": 3, "D": 4, "E": 5, "F": 6, "G": 7, "T": 8}
     age_map = {"1": 1, "2": 2, "3": 3}
 
     df = df.replace({"Sex": gender_map, "Embarked": port_map, "Name": title_map, "Cabin": cabin_map, "Age": age_map })
@@ -99,7 +101,7 @@ def create_submission_csv(classifications):
 
 if __name__ == "__main__":
     print "Train: "
-    print preprocessed_training_set().head()
+    print preprocessed_training_set()
     print "Test: "
-    print preprocessed_test_set().head()
+    print preprocessed_test_set()
 
