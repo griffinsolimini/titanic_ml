@@ -23,6 +23,10 @@ def preprocessed_training_set():
     
     # Build family size feature and make discrete
     df['FamilySize'] = df['SibSp'] + df['Parch'] + 1
+    
+    #  print df.groupby(['Sex'])['Survived'].mean()
+    #  print df.groupby(['Name'])['Survived'].mean()
+    #  print df.groupby(['FamilySize'])['Survived'].mean()
 
     df = df.drop(['SibSp', 'Parch'], 1)
     
