@@ -33,10 +33,10 @@ print "Naive Bayes: " + str(nb.score(train_X, train_Y))
 
 test_X = s.preprocessed_test_set()
 
-#  submission = pd.DataFrame({
-        #  "PassengerId": pd.read_csv('data/test.csv')['PassengerId'],
-        #  "Survived": classifier.predict(test_X)
-    #  })
-#  
-#  submission.to_csv('data/result.csv', index=False)
+submission = pd.DataFrame({
+    "PassengerId": pd.read_csv('data/test.csv')['PassengerId'],
+    "Survived": random_forest.predict(test_X)
+})
+  
+submission.to_csv('data/result.csv', index=False)
 
