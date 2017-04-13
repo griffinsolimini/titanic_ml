@@ -70,7 +70,7 @@ def preprocessed_training_set():
 
     df = df.replace({"Sex": gender_map, "Embarked": port_map, "Name": title_map, "Cabin": cabin_map, "Age": age_map, "PassengerId": mother_map})
 
-    print(df)
+    #print(df)
 
     return df
 
