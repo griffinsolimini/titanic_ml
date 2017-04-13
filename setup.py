@@ -8,6 +8,15 @@ def raw_test_set():
 
 def preprocessed_training_set():
     df = pd.read_csv('data/train.csv')
+    df = process_data_set(df)
+    return df
+
+def preprocessed_test_set():
+    df = pd.read_csv('data/test.csv')
+    df = process_data_set(df)
+    return df
+
+def process_data_set(df):
     df = df.drop(['Ticket'], 1)
     df['PassengerId'].loc[df['PassengerId'] > 0] = "not mother"
     df['Embarked'] = df['Embarked'].fillna('S')
@@ -73,7 +82,7 @@ def preprocessed_training_set():
     #print(df)
 
     return df
-
+'''
 def preprocessed_test_set():
     df = pd.read_csv('data/test.csv')
     df = df.drop(['Ticket'], 1)
@@ -113,7 +122,7 @@ def preprocessed_test_set():
     df['Age'].loc[df['Age'] > 64] = "1"
     df['Age'].loc[(df['Age'] < 65) & (df['Age'] > 14)] = "3"
     df['Age'].loc[df['Age'] < 0] = "-1"
-    '''
+    
     sMedian = df['Fare'].loc[df['Embarked'] == "S"].median()
     qMedian = df['Fare'].loc[df['Embarked'] == "Q"].median()
     cMedian = df['Fare'].loc[df['Embarked'] == "C"].median()
@@ -124,7 +133,7 @@ def preprocessed_test_set():
     df['Fare'].loc[(df['Embarked'] == "C") & (df['Fare'] != "low")] = "high"
     df['Fare'].loc[(df['Embarked'] == "Q") & (df['Fare'] <= qMedian)] = "low"
     df['Fare'].loc[(df['Embarked'] == "Q") & (df['Fare'] != "low")] = "high"
-    '''
+    
     gender_map = { "male": 1, "female": 2, "child": 3 } 
     port_map = { "S": 1, "C": 2, "Q": 3 }
     cabin_map = {"U": 0, "A": 1, "B": 2, "C": 3, "D": 4, "E": 5, "F": 6, "G": 7, "T": 8}
@@ -135,7 +144,7 @@ def preprocessed_test_set():
     df = df.replace({"Sex": gender_map, "Embarked": port_map, "Name": title_map, "Cabin": cabin_map, "Age": age_map, "PassengerId": mother_map})
 
     return df
-
+'''
 def create_submission_csv(classifications):
     df = pd.DataFrame(pd.read_csv('data/test.csv')['PassengerId'])
     df['Survived'] = pd.DataFrame({ 'Survived': classifications })
@@ -143,7 +152,7 @@ def create_submission_csv(classifications):
 
 if __name__ == "__main__":
     print "Train: "
-    print preprocessed_training_set()
+    print preprocessed_training_set().head()
     print "Test: "
-    print preprocessed_test_set()
+    print preprocessed_test_set().head()
 
