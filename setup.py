@@ -80,8 +80,9 @@ def process_data_set(df):
     #  print df.groupby(['Parch'])['Survived'].mean()
     
     df['Family'] = df['SibSp'] + df['Parch'] + 1
-    #  df['Family'].loc[df['Family'] > 1] = 1
-    #  df['Family'].loc[df['Family'] == 1] = 0
+    df['IsAlone'] = df['Family']
+    df['IsAlone'].loc[df['IsAlone'] == 1] = 0
+    df['IsAlone'].loc[df['IsAlone'] > 1] = 1
 
     #  df.drop(['SibSp', 'Parch'], axis=1, inplace=True)
 

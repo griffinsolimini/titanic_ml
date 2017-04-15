@@ -5,6 +5,7 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.naive_bayes import GaussianNB
 from sklearn.tree import DecisionTreeRegressor
 from sklearn.neural_network import MLPClassifier
+from sklearn.ensemble import AdaBoostClassifier
 
 import matplotlib.pyplot as plt
 
@@ -19,11 +20,17 @@ train_Y = s.preprocessed_training_set()['Survived']
 #  logreg.fit(train_X, train_Y)
 #  print "Logistic Regression: " + str(logreg.score(train_X, train_Y))
 #  
-rf = RandomForestClassifier(n_estimators=1000, max_depth=3)
+
+
+
+rf = RandomForestClassifier(n_estimators=100, max_depth=2)
 rf.fit(train_X, train_Y)
 print "Random Forest: " + str(rf.score(train_X, train_Y))
 #  
 
+ada = AdaBoostClassifier(n_estimators=100)
+ada.fit(train_X, train_Y)
+print "Ada: " + str(ada.score(train_X, train_Y))
 #  err_values = []
 #  for i in range(1, 140):
     #  random_forest = RandomForestClassifier(n_estimators=i)
@@ -79,4 +86,11 @@ rf_submission = pd.DataFrame({
 })
   
 rf_submission.to_csv('data/rf_result.csv', index=False)
+
+ada_submission = pd.DataFrame({ 
+    "PassengerId": pd.read_csv('data/test.csv')['PassengerId'],
+    "Survived": ada.predict(test_X)
+})
+
+ada_submission.to_csv('data/ada_result.csv', index=False)
 
