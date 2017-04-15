@@ -35,8 +35,45 @@ def get_mother(passenger):
     else:
         return "no"
 
+def bucket_age(ageIn):
+    age = ageIn
+    if age <= 19:
+        return 1
+    elif age > 19 and age <= 25: 
+        return 2
+    elif age > 25 and age <= 32:
+        return 3
+    elif age > 32 and age <= 40:
+        return 4
+    else:
+        return 5
+
+def bucket_fare(fareIn):
+    fare = fareIn
+    if fare <= 8:
+        return 1
+    elif fare > 8 and fare <= 26:
+        return 2
+    else:
+        return 3
+
+def bucket_name_length(lengthIn):
+    length = lengthIn
+    if length <= 19:
+        return 1
+    elif length > 19 and length <= 23:
+        return 2
+    elif length > 23 and length <= 27:
+        return 3
+    elif length > 27 and length <= 32:
+        return 4
+    else:
+        return 5
+
+
 def process_data_set(df):
-    df = df.drop(['PassengerId', 'Ticket', 'Cabin'], 1)
+
+    df = df.drop(['PassengerId', 'Cabin'], 1)
     
     df['Embarked'] = df['Embarked'].fillna('S')
     
@@ -62,13 +99,26 @@ def process_data_set(df):
     df['Age'] = df['Age'].astype(int)
 
     df = df.fillna(0)
-    
+
+
+    df['TicketLength'] = df['Ticket'].apply(lambda x: len(x))
+    df['NameLength'] = df['Name'].apply(lambda x: len(x))
+    df['BucketNameLength'] = df['NameLength'].apply(bucket_name_length)
+    df = df.drop(['NameLength', 'Ticket'], 1)
+
+
     df['Name'].replace({'(.*, )|(\\..*)':'', 'Mlle':'Miss', 'Ms':'Miss', 'Mme':'Mrs'}, regex=True, inplace=True)
     common_titles = { 'Mr', 'Mrs', 'Master', 'Miss' }
     df['Name'].loc[df['Name'].apply(lambda x: x not in common_titles)] = "Rare"
 
 
     df['Person'] = df[['Age', 'Sex', 'Name', 'Parch']].apply(get_person, axis=1)
+
+
+    df['BucketAge'] = df['Age'].apply(bucket_age)
+    df['BucketFare'] = df['Fare'].apply(bucket_fare)
+    df = df.drop(['Age', 'Fare'], 1)
+
 
 
     #  df['Mother'] = df[['Age', 'Name', 'Person', 'Parch']].apply(get_mother, axis=1)
@@ -141,11 +191,11 @@ def process_data_set(df):
     
     gender_map = { "male": 1, "female": 2, "child": 3, "mother": 4} 
     port_map = { "S": 1, "C": 2, "Q": 3 }
-    cabin_map = { "U": 0, "A": 1, "B": 2, "C": 3, "D": 4, "E": 5, "F": 6, "G": 7, "T": 8 }
+    #cabin_map = { "U": 0, "A": 1, "B": 2, "C": 3, "D": 4, "E": 5, "F": 6, "G": 7, "T": 8 }
     sex_map = {"male": 0, "female": 1 }
     #  age_map = {"-1": 0, "1": 1, "2": 2, "3": 3}
     title_map = { 'Mr':1, 'Master':2, 'Mrs':3, 'Miss':4, 'Rare':5 }
-    mother_map = {"no": 0, "yes": 1 }
+    #mother_map = {"no": 0, "yes": 1 }
     #fare_map = {"low": 0, "high": 1}
     
 

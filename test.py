@@ -23,7 +23,7 @@ train_Y = s.preprocessed_training_set()['Survived']
 
 
 
-rf = RandomForestClassifier(n_estimators=100, max_depth=2)
+rf = RandomForestClassifier(n_estimators=750, min_samples_split=10)
 rf.fit(train_X, train_Y)
 print "Random Forest: " + str(rf.score(train_X, train_Y))
 #  
